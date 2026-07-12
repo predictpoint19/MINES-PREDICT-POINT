@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MINES PREDICT POINT</title>
+<style>
+:root {
+  --box:60px;
+  --gap:10px;
+}
+
+/* Body */
+body {
+  font-family:"Poppins",sans-serif;
+  margin:0;
+  padding:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  color:#ffd700;
+}
+
+/* App container */
+.app {
+  width:100%;
+  max-width:420px;
+  min-height:100vh;
+  padding:15px;
+  box-sizing:border-box;
+}
+
+/* Card */
+.card {
+  background: #000;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 18px;
+  border: 1px solid #fff;
+  display: flex;
+  justify-content: center; /* center align horizontally */
+  align-items: center;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.cardimg {
+  width: 30%; /* thoda bada so it stands out */
+  display: flex;
+  justify-content: center;
+}
+
+.cardimg img {
+  width: 100%;
+  max-width: 180px; /* optional: fix max size */
+  border-radius: 10px;
+  border: 2px solid rgba(255, 215, 0, 0.6);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.35);
+  image-rendering: crisp-edges;
+  filter: brightness(1.05) contrast(1.08);
+  transform: translateZ(0);
+}
+
+
+.cardinfo {
+  width:70%;
+  padding-left:10px;
+  font-weight:700;
+  color:#ffd700;
+  text-shadow:0 0 6px rgba(255,215,0,0.6);
+}
+
+/* Main box */
+.main-box {
+  background:#000;
+  border-radius:12px;
+  padding:15px;
+  margin-bottom:20px;
+  border:1px solid #fff;
+  box-shadow:0 0 10px rgba(255,255,255,0.1);
+}
+
+/* Selector */
+.selector {
+  text-align:center;
+  margin-bottom:10px;
+  position:relative;
+}
+.selector button {
+  width:90%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #fff;
+  background:linear-gradient(135deg,#0a1a40,#0c3ca0);
+  color:#ffd700;
+  font-weight:600;
+  cursor:pointer;
+  z-index:10;
+  position:relative;
+  transition:all 0.3s ease;
+  box-shadow:0 0 10px rgba(255,255,255,0.15), inset 0 0 5px rgba(0,0,0,0.4);
+}
+.selector button:hover {
+  transform:scale(1.03);
+  box-shadow:0 0 15px rgba(255,215,0,0.4);
+}
+
+/* Dropdown */
+.dropdown {
+  display:none;
+  position:absolute;
+  top:50px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  background:rgba(25,25,25,0.96);
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 4px 12px rgba(0,0,0,0.7);
+  z-index:1000;
+}
+.dropdown div {
+  padding:10px;
+  border:1px solid #fff;
+  margin:3px;
+  border-radius:6px;
+  color:#ffd700;
+  background:rgba(0,0,0,0.6);
+  cursor:pointer;
+  font-weight:600;
+  transition: background 0.2s, transform 0.3s;
+}
+.dropdown div:hover {
+  background:rgba(255,255,255,0.08);
+  transform:translateX(5px);
+}
+
+/* Selected text */
+.selected-text { 
+  text-align:center;
+  margin:10px 0;
+  color:#fff;
+}
+
+/* Grid */
+.grid-container {
+  display:grid;
+  grid-template-columns: repeat(5, minmax(50px, var(--box)));
+  grid-auto-rows: minmax(50px, var(--box));
+  gap:var(--gap);
+  justify-content:center;
+  width:100%;
+  margin:18px auto;
+}
+.grid-item {
+  width:100%;
+  height:100%;
+  background-image:url("griiid.png");
+  background-size:cover;
+  background-position:center;
+  border-radius:8px;
+  border:1px solid #fff;
+  box-shadow: inset 0 0 6px rgba(255,255,255,0.03);
+}
+.grid-item.diamond {
+  background-image:url("/IMAGES/star.png");
+  background-size:cover;
+  background-position:center;
+  box-shadow:0 0 10px rgba(255,215,100,0.5);
+}
+
+/* Start button */
+.start-control {text-align:center; margin-top:6px;}
+.start-control button {
+  width:85%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #fff;
+  background:linear-gradient(135deg,#002b88,#007bff);
+  color:#ffd700;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s ease;
+  box-shadow:0 0 10px rgba(255,255,255,0.15), inset 0 0 5px rgba(0,0,0,0.4);
+}
+.start-control button:hover {
+  transform:scale(1.04);
+  box-shadow:0 0 15px rgba(255,215,0,0.4);
+}
+
+/* Bottom box */
+.bottom-box {
+  text-align:center;
+  margin-top:14px;
+  background:#000;
+  border-radius:12px;
+  padding:12px;
+  box-shadow:0 0 10px rgba(255,255,255,0.05);
+  border:1px solid #fff;
+}
+.bottom-box button {
+  width:85%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:8px;
+  border:1px solid #fff;
+  background:linear-gradient(135deg,#0a1a40,#0c3ca0);
+  color:#ffd700;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s ease;
+  box-shadow:0 0 10px rgba(255,255,255,0.15), inset 0 0 5px rgba(0,0,0,0.4);
+}
+.bottom-box button:hover {
+  transform:scale(1.03);
+  box-shadow:0 0 15px rgba(255,215,0,0.4);
+}
+
+/* Popup */
+.popup-overlay {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  align-items:center;
+  justify-content:center;
+}
+.popup-content {
+  background:#111;
+  padding:16px;
+  border-radius:8px;
+  color:#ffd700;
+  text-align:center;
+  box-shadow:0 0 10px rgba(255,215,0,0.3);
+  font-weight:600;
+}
+
+/* Blink + Zoom */
+.blink {
+  animation: blinkAnim 1.8s infinite ease-in-out;
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+}
+@keyframes blinkAnim {
+  0%,100% { box-shadow:0 0 4px rgba(255,215,0,0.3); transform: scale(1); filter:brightness(1);}
+  50% { box-shadow:0 0 16px rgba(255,215,0,0.6); transform: scale(1.04); filter:brightness(1.1);}
+}
+
+/* Recording Clarity Fix */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+.cardinfo, .bottom-box, .selector button, .start-control button, .dropdown div {
+  text-shadow: 0 0 3px rgba(255,215,0,0.4);
+  filter: brightness(1.1);
+}
+body, .main-box, .bottom-box, .card {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+@media (max-width:480px){
+  .cardinfo{font-size:14px;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="card">
+    <div class="cardimg"><img src="/IMAGES/MINES PREDICT POINT.png" alt="logo"></div>
+  </div>
+
+  <div class="main-box">
+    <div class="selector">
+      <button id="arrowBtn">▼ Select your mines 💣</button>
+      <div class="dropdown" id="dropdown">
+        <div data-value="3">3💣</div>
+      </div>
+    </div>
+    <div class="selected-text" id="selectedText"></div>
+
+    <div class="grid-container" id="grid"></div>
+    <div class="start-control">
+      <button id="startBtn">START</button>
+    </div>
+  </div>
+
+  <div class="bottom-box">
+    <button onclick="window.open('https://t.me/PREDICTPOINT','_blank')">TELEGRAM</button>
+    <button id="howToUseBtn" onclick="window.location.href='howtouse.html'">HOW TO USE</button>
+  </div>
+</div>
+
+<div class="popup-overlay" id="popup">
+  <div class="popup-content">Please select a mines 💣 first!</div>
+</div>
+
+<script>
+const grid = document.getElementById('grid');
+const arrowBtn = document.getElementById('arrowBtn');
+const dropdown = document.getElementById('dropdown');
+const selectedText = document.getElementById('selectedText');
+const startBtn = document.getElementById('startBtn');
+const popup = document.getElementById('popup');
+const howToUseBtn = document.getElementById('howToUseBtn');
+
+let selectedMines = null;
+const resultsMap = {1:20,2:14,3:5,4:7,5:6,6:4,10:3,12:2,15:1};
+
+// create grid
+for(let i=0;i<25;i++){
+  const d = document.createElement('div');
+  d.className = 'grid-item';
+  grid.appendChild(d);
+}
+
+function clearBoard(){ [...grid.children].forEach(c=>c.classList.remove('diamond')); }
+function blink(el){ if(!el) return; el.classList.add('blink'); }
+function stopBlink(el){ if(!el) return; el.classList.remove('blink'); }
+function isHowToUseBlinking(){ return howToUseBtn.classList.contains('blink'); }
+
+function showPopup(message, scrollToBtn=false){
+  popup.querySelector('.popup-content').textContent = message;
+  popup.style.display = 'flex';
+  if(scrollToBtn){
+    howToUseBtn.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  setTimeout(()=>popup.style.display='none',1600);
+}
+
+// Arrow button click
+arrowBtn.addEventListener('click', ()=> {
+  if(isHowToUseBlinking()){
+    showPopup("Please click HOW TO USE button first!", true);
+    return;
+  }
+  dropdown.style.display=(dropdown.style.display==='block')?'none':'block';
+  clearBoard(); startBtn.textContent='START'; selectedMines=null; selectedText.textContent='';
+  stopBlink(startBtn);
+  sessionStorage.setItem('stepState','selectMines');
+
+  // Sequential blink dropdown items
+  let items=[...dropdown.children];
+  let i=0;
+  let interval=setInterval(()=>{
+    items.forEach(it=>it.classList.remove('blink'));
+    items[i].classList.add('blink');
+    i=(i+1)%items.length;
+    if(selectedMines){ clearInterval(interval); items.forEach(it=>it.classList.remove('blink')); }
+  },800);
+});
+
+// Dropdown select
+dropdown.querySelectorAll('div').forEach(opt=>{
+  opt.addEventListener('click', ()=>{
+    if(isHowToUseBlinking()){
+      showPopup("Please click HOW TO USE button first!", true);
+      return;
+    }
+    selectedMines=parseInt(opt.dataset.value,10);
+    selectedText.textContent = `Your selected mines: ${opt.textContent}`;
+    dropdown.style.display='none';
+    stopBlink(arrowBtn);
+    blink(startBtn);
+    sessionStorage.setItem('stepState','minesSelected');
+  });
+});
+
+// Show result
+function showResult(){
+  clearBoard();
+  if(!selectedMines){
+    showPopup("Please select a mines 💣 first!");
+    return;
+  }
+  const count = resultsMap[selectedMines]||0;
+  const idx=[];
+  while(idx.length<count){
+    const r=Math.floor(Math.random()*25);
+    if(!idx.includes(r)) idx.push(r);
+  }
+  idx.forEach(i=>grid.children[i].classList.add('diamond'));
+}
+
+// Start button click
+startBtn.addEventListener('click', ()=>{
+  if(isHowToUseBlinking()){
+    showPopup("Please click HOW TO USE button first!", true);
+    return;
+  }
+  stopBlink(startBtn);
+  if(startBtn.textContent==='START'){
+    showResult();
+    if(selectedMines) startBtn.textContent='NEXT';
+  } else showResult();
+});
+
+// Page load/back
+window.addEventListener('pageshow',(event)=>{
+  const perfNav=performance.getEntriesByType("navigation")[0];
+  if(!event.persisted && perfNav?.type==='reload'){
+    sessionStorage.setItem('stepState','howToUse');
+  }
+  const state=sessionStorage.getItem('stepState')||'howToUse';
+  if(state==='howToUse'){blink(howToUseBtn);}
+  else if(state==='selectMines'){stopBlink(howToUseBtn); blink(arrowBtn);}
+  else if(state==='minesSelected'){stopBlink(howToUseBtn); stopBlink(arrowBtn); blink(startBtn);}
+});
+
+// HowToUse button
+howToUseBtn.addEventListener('click',()=>{
+  stopBlink(howToUseBtn);
+  sessionStorage.setItem('stepState','selectMines');
+  blink(arrowBtn);
+});
+</script>
+</body>
+</html>
